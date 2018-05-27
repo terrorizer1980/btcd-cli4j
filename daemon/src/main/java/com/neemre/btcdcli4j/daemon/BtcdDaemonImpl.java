@@ -1,15 +1,5 @@
 package com.neemre.btcdcli4j.daemon;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.neemre.btcdcli4j.core.BitcoindException;
 import com.neemre.btcdcli4j.core.CommunicationException;
 import com.neemre.btcdcli4j.core.NodeProperties;
@@ -18,6 +8,15 @@ import com.neemre.btcdcli4j.daemon.event.AlertListener;
 import com.neemre.btcdcli4j.daemon.event.BlockListener;
 import com.neemre.btcdcli4j.daemon.event.WalletListener;
 import com.neemre.btcdcli4j.daemon.notification.NotificationMonitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class BtcdDaemonImpl implements BtcdDaemon {
 	
@@ -39,7 +38,7 @@ public class BtcdDaemonImpl implements BtcdDaemon {
 		initialize();
 		this.client = configurator.checkBtcdProvider(btcdProvider);
 		buildMonitors(configurator.checkNodeConfig(client.getNodeConfig()));
-		configurator.checkNodeLiveness(client.getInfo());
+		configurator.checkNodeLiveness(client.getNetworkInfo());
 		startMonitors();
 		configurator.checkMonitorStates(futures);
 	}

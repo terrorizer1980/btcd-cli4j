@@ -38,7 +38,6 @@ public enum Commands {
 	GET_DIFFICULTY("getdifficulty", 0, 0),
 	GET_GENERATE("getgenerate", 0, 0),
 	GET_HASHES_PER_SEC("gethashespersec", 0, 0),
-	GET_INFO("getinfo", 0, 0),
 	GET_MEM_POOL_INFO("getmempoolinfo", 0, 0),
 	GET_MINING_INFO("getmininginfo", 0, 0),
 	GET_NET_TOTALS("getnettotals", 0, 0),

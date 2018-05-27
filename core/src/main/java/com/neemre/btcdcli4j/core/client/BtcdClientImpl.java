@@ -1,52 +1,25 @@
 package com.neemre.btcdcli4j.core.client;
 
+import com.neemre.btcdcli4j.core.BitcoindException;
+import com.neemre.btcdcli4j.core.Commands;
+import com.neemre.btcdcli4j.core.CommunicationException;
+import com.neemre.btcdcli4j.core.common.DataFormats;
+import com.neemre.btcdcli4j.core.common.Defaults;
+import com.neemre.btcdcli4j.core.domain.*;
+import com.neemre.btcdcli4j.core.jsonrpc.client.JsonRpcClient;
+import com.neemre.btcdcli4j.core.jsonrpc.client.JsonRpcClientImpl;
+import com.neemre.btcdcli4j.core.util.CollectionUtils;
+import com.neemre.btcdcli4j.core.util.NumberUtils;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.neemre.btcdcli4j.core.BitcoindException;
-import com.neemre.btcdcli4j.core.Commands;
-import com.neemre.btcdcli4j.core.CommunicationException;
-import com.neemre.btcdcli4j.core.common.DataFormats;
-import com.neemre.btcdcli4j.core.common.Defaults;
-import com.neemre.btcdcli4j.core.domain.Account;
-import com.neemre.btcdcli4j.core.domain.AddedNode;
-import com.neemre.btcdcli4j.core.domain.Address;
-import com.neemre.btcdcli4j.core.domain.AddressInfo;
-import com.neemre.btcdcli4j.core.domain.AddressOverview;
-import com.neemre.btcdcli4j.core.domain.Block;
-import com.neemre.btcdcli4j.core.domain.BlockChainInfo;
-import com.neemre.btcdcli4j.core.domain.Info;
-import com.neemre.btcdcli4j.core.domain.MemPoolInfo;
-import com.neemre.btcdcli4j.core.domain.MemPoolTransaction;
-import com.neemre.btcdcli4j.core.domain.MiningInfo;
-import com.neemre.btcdcli4j.core.domain.MultiSigAddress;
-import com.neemre.btcdcli4j.core.domain.NetworkInfo;
-import com.neemre.btcdcli4j.core.domain.NetworkTotals;
-import com.neemre.btcdcli4j.core.domain.Output;
-import com.neemre.btcdcli4j.core.domain.OutputOverview;
-import com.neemre.btcdcli4j.core.domain.Payment;
-import com.neemre.btcdcli4j.core.domain.PeerNode;
-import com.neemre.btcdcli4j.core.domain.RawTransaction;
-import com.neemre.btcdcli4j.core.domain.RawTransactionOverview;
-import com.neemre.btcdcli4j.core.domain.RedeemScript;
-import com.neemre.btcdcli4j.core.domain.SignatureResult;
-import com.neemre.btcdcli4j.core.domain.SinceBlock;
-import com.neemre.btcdcli4j.core.domain.Tip;
-import com.neemre.btcdcli4j.core.domain.Transaction;
-import com.neemre.btcdcli4j.core.domain.TxOutSetInfo;
-import com.neemre.btcdcli4j.core.domain.WalletInfo;
-import com.neemre.btcdcli4j.core.jsonrpc.client.JsonRpcClient;
-import com.neemre.btcdcli4j.core.jsonrpc.client.JsonRpcClientImpl;
-import com.neemre.btcdcli4j.core.util.CollectionUtils;
-import com.neemre.btcdcli4j.core.util.NumberUtils;
 
 public class BtcdClientImpl implements BtcdClient {
 
@@ -65,7 +38,7 @@ public class BtcdClientImpl implements BtcdClient {
 		initialize();
 		rpcClient = new JsonRpcClientImpl(configurator.checkHttpProvider(httpProvider), 
 				configurator.checkNodeConfig(nodeConfig));
-		configurator.checkNodeVersion(getInfo().getVersion());
+		configurator.checkNodeVersion(getNetworkInfo().getVersion());
 		configurator.checkNodeHealth((Block)getBlock(getBestBlockHash(), true));
 	}
 
@@ -384,13 +357,6 @@ public class BtcdClientImpl implements BtcdClient {
 		String hashesPerSecJson = rpcClient.execute(Commands.GET_HASHES_PER_SEC.getName());
 		Long hashesPerSec = rpcClient.getParser().parseLong(hashesPerSecJson);
 		return hashesPerSec;
-	}
-
-	@Override
-	public Info getInfo() throws BitcoindException, CommunicationException {
-		String infoJson = rpcClient.execute(Commands.GET_INFO.getName());
-		Info info = rpcClient.getMapper().mapToEntity(infoJson, Info.class);
-		return info;
 	}
 
 	@Override
