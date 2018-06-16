@@ -1,13 +1,13 @@
 package com.neemre.btcdcli4j.examples.daemon;
 
 import com.neemre.btcdcli4j.core.client.BtcdClient;
+import com.neemre.btcdcli4j.core.domain.RawBlock;
+import com.neemre.btcdcli4j.core.domain.Transaction;
 import com.neemre.btcdcli4j.daemon.BtcdDaemon;
 import com.neemre.btcdcli4j.daemon.Notifications;
 import com.neemre.btcdcli4j.daemon.event.AlertListener;
 import com.neemre.btcdcli4j.daemon.event.BlockListener;
 import com.neemre.btcdcli4j.daemon.event.WalletListener;
-import com.neemre.btcdcli4j.core.domain.Block;
-import com.neemre.btcdcli4j.core.domain.Transaction;
 import com.neemre.btcdcli4j.examples.util.OutputUtils;
 import com.neemre.btcdcli4j.examples.util.ResourceUtils;
 
@@ -38,8 +38,8 @@ public class RpcCapableDaemon {
 		});
 		daemon.addBlockListener(new BlockListener() {
 			@Override
-			public void blockDetected(Block block) {
-				System.out.printf("New block detected! (Event details: '%s')\n", block);
+			public void blockDetected(RawBlock rawBlock) {
+				System.out.printf("New block detected! (Event details: '%s')\n", rawBlock);
 			}
 		});
 		daemon.addWalletListener(new WalletListener() {

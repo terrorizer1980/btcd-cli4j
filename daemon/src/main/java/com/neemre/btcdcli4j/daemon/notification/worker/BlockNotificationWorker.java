@@ -1,14 +1,13 @@
 package com.neemre.btcdcli4j.daemon.notification.worker;
 
-import java.net.Socket;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.neemre.btcdcli4j.core.BitcoindException;
 import com.neemre.btcdcli4j.core.CommunicationException;
 import com.neemre.btcdcli4j.core.client.BtcdClient;
-import com.neemre.btcdcli4j.core.domain.Block;
+import com.neemre.btcdcli4j.core.domain.RawBlock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.Socket;
 
 public class BlockNotificationWorker extends NotificationWorker {
 
@@ -21,18 +20,18 @@ public class BlockNotificationWorker extends NotificationWorker {
 
 	@Override
 	protected Object getRelatedEntity(String headerHash) {
-		Block block = new Block();
-		block.setHash(headerHash);
+		RawBlock rawBlock = new RawBlock();
+		rawBlock.setHash(headerHash);
 		if (getClient() != null) {
 			try {
 				LOG.debug("-- getRelatedEntity(..): fetching related block data from 'bitcoind' "
 						+ "(via JSON-RPC API)");
-				block = getClient().getBlock(headerHash);
+				rawBlock = getClient().getBlock(headerHash, 2);
 			} catch (BitcoindException | CommunicationException e) {
 				LOG.error("<< getRelatedEntity(..): failed to receive block data from 'bitcoind' "
 						+ "(hash: '{}'), message was: '{}'", headerHash, e.getMessage());
 			}
 		}
-		return block;
+		return rawBlock;
 	}
 }

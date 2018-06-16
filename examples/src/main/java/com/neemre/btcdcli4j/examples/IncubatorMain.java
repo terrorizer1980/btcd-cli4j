@@ -1,24 +1,10 @@
 package com.neemre.btcdcli4j.examples;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.UUID;
-
-import org.apache.http.impl.client.CloseableHttpClient;
-
 import com.neemre.btcdcli4j.core.BitcoindException;
 import com.neemre.btcdcli4j.core.client.BtcdClient;
 import com.neemre.btcdcli4j.core.client.BtcdClientImpl;
-import com.neemre.btcdcli4j.daemon.BtcdDaemon;
-import com.neemre.btcdcli4j.daemon.BtcdDaemonImpl;
-import com.neemre.btcdcli4j.daemon.event.AlertListener;
-import com.neemre.btcdcli4j.daemon.event.BlockListener;
-import com.neemre.btcdcli4j.daemon.event.WalletListener;
-import com.neemre.btcdcli4j.core.domain.Block;
 import com.neemre.btcdcli4j.core.domain.PeerNode;
+import com.neemre.btcdcli4j.core.domain.RawBlock;
 import com.neemre.btcdcli4j.core.domain.Transaction;
 import com.neemre.btcdcli4j.core.http.client.SimpleHttpClient;
 import com.neemre.btcdcli4j.core.http.client.SimpleHttpClientImpl;
@@ -27,7 +13,16 @@ import com.neemre.btcdcli4j.core.jsonrpc.client.JsonRpcClient;
 import com.neemre.btcdcli4j.core.jsonrpc.client.JsonRpcClientImpl;
 import com.neemre.btcdcli4j.core.util.CollectionUtils;
 import com.neemre.btcdcli4j.core.util.StringUtils;
+import com.neemre.btcdcli4j.daemon.BtcdDaemon;
+import com.neemre.btcdcli4j.daemon.BtcdDaemonImpl;
+import com.neemre.btcdcli4j.daemon.event.AlertListener;
+import com.neemre.btcdcli4j.daemon.event.BlockListener;
+import com.neemre.btcdcli4j.daemon.event.WalletListener;
 import com.neemre.btcdcli4j.examples.util.ResourceUtils;
+import org.apache.http.impl.client.CloseableHttpClient;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 /**Please ignore this class - it's just a quick mock-up {@code main} for ironing out bugs/trying 
  * new features.*/
@@ -129,8 +124,8 @@ public class IncubatorMain {
 		});
 		daemon.addBlockListener(new BlockListener() {
 			@Override
-			public void blockDetected(Block block) {
-				System.out.printf("New block detected! (Event details: '%s')\n", block);
+			public void blockDetected(RawBlock rawBlock) {
+				System.out.printf("New block detected! (Event details: '%s')\n", rawBlock);
 			}
 		});
 		daemon.addWalletListener(new WalletListener() {

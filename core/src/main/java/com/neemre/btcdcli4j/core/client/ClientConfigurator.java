@@ -1,25 +1,23 @@
 package com.neemre.btcdcli4j.core.client;
 
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
+import com.neemre.btcdcli4j.core.NodeProperties;
+import com.neemre.btcdcli4j.core.common.AgentConfigurator;
+import com.neemre.btcdcli4j.core.common.Defaults;
+import com.neemre.btcdcli4j.core.common.Errors;
+import com.neemre.btcdcli4j.core.domain.RawBlock;
+import com.neemre.btcdcli4j.core.util.CollectionUtils;
+import com.neemre.btcdcli4j.core.util.StringUtils;
 import lombok.Getter;
-
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.neemre.btcdcli4j.core.NodeProperties;
-import com.neemre.btcdcli4j.core.common.AgentConfigurator;
-import com.neemre.btcdcli4j.core.common.Defaults;
-import com.neemre.btcdcli4j.core.common.Errors;
-import com.neemre.btcdcli4j.core.domain.Block;
-import com.neemre.btcdcli4j.core.util.CollectionUtils;
-import com.neemre.btcdcli4j.core.util.StringUtils;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class ClientConfigurator extends AgentConfigurator {
 
@@ -57,11 +55,11 @@ public class ClientConfigurator extends AgentConfigurator {
 		return nodeVersion;
 	}
 
-	public boolean checkNodeHealth(Block bestBlock) {
+	public boolean checkNodeHealth(RawBlock bestRawBlock) {
 		long currentTime = System.currentTimeMillis() / 1000;
-		if ((currentTime - bestBlock.getTime()) > TimeUnit.HOURS.toSeconds(6)) {
+		if ((currentTime - bestRawBlock.getTime()) > TimeUnit.HOURS.toSeconds(6)) {
 			LOG.warn("-- checkNodeHealth(..): last available block was mined >{} hours ago; please "
-					+ "check your network connection", ((currentTime - bestBlock.getTime()) / 3600));
+					+ "check your network connection", ((currentTime - bestRawBlock.getTime()) / 3600));
 			return false;
 		}
 		return true;
