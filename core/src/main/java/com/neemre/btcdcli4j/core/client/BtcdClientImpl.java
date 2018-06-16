@@ -39,7 +39,7 @@ public class BtcdClientImpl implements BtcdClient {
 		rpcClient = new JsonRpcClientImpl(configurator.checkHttpProvider(httpProvider), 
 				configurator.checkNodeConfig(nodeConfig));
 		configurator.checkNodeVersion(getNetworkInfo().getVersion());
-		configurator.checkNodeHealth((Block)getBlock(getBestBlockHash(), true));
+		configurator.checkNodeHealth(getBlock(getBestBlockHash(), 2));
 	}
 
 	public BtcdClientImpl(String rpcUser, String rpcPassword) throws BitcoindException, 
@@ -281,24 +281,11 @@ public class BtcdClientImpl implements BtcdClient {
 	}
 
 	@Override
-	public Block getBlock(String headerHash) throws BitcoindException, CommunicationException {
-		String blockJson = rpcClient.execute(Commands.GET_BLOCK.getName(), headerHash);
-		Block block = rpcClient.getMapper().mapToEntity(blockJson, Block.class);
-		return block;
-	}
-
-	@Override
-	public Object getBlock(String headerHash, Boolean isDecoded) throws BitcoindException, 
-			CommunicationException {
-		List<Object> params = CollectionUtils.asList(headerHash, isDecoded);
+	public RawBlock getBlock(String headerHash, int verbosity) throws BitcoindException, CommunicationException {
+		List<Object> params = CollectionUtils.asList(headerHash, verbosity);
 		String blockJson = rpcClient.execute(Commands.GET_BLOCK.getName(), params);
-		if (isDecoded) {
-			Block block = rpcClient.getMapper().mapToEntity(blockJson, Block.class);
-			return block;
-		} else {
-			String block = rpcClient.getParser().parseString(blockJson);
-			return block;
-		}
+		RawBlock rawBlock = rpcClient.getMapper().mapToEntity(blockJson, RawBlock.class);
+		return rawBlock;
 	}
 
 	@Override
