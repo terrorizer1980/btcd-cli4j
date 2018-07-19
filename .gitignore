@@ -5,7 +5,12 @@ target/
 .classpath
 .project
 .idea/
-
+.gradle
 # Project-specific patterns
 logs/
 cloc_analysis_14122015.txt
+
+examples/build
+core/build
+daemon/build
+
