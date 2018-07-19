@@ -24,13 +24,16 @@
 		<module>daemon</module>
 		<module>examples</module>
 	</modules>
-
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
 	<distributionManagement>
-		<repository>
-			<id>mvn-nemp-ftp</id>
-			<name>Nemp's Maven Repository</name>
-			<url>ftp://nemp.planet.ee/htdocs/mvn/</url>
-		</repository>
+		<snapshotRepository>
+			<id>nexus</id>
+			<url>https://nexus.internal.blockchain.info/repository/maven-snapshots/</url>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<properties>
@@ -104,6 +107,17 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
 				<version>2.8</version>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.8</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>nexus</serverId>
+					<nexusUrl>https://nexus.internal.blockchain.info/repository/maven-public/</nexusUrl>
+					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
