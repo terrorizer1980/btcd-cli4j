@@ -293,6 +293,14 @@ public class BtcdClientImpl implements BtcdClient {
 	}
 
 	@Override
+	public String getBlockHex(String headerHash) throws BitcoindException, CommunicationException {
+		List<Object> params = CollectionUtils.asList(headerHash, false);
+		String blockJson = rpcClient.execute(Commands.GET_BLOCK.getName(), params);
+		String blockHex = rpcClient.getMapper().mapToEntity(blockJson, String.class);
+		return blockHex;
+	}
+
+	@Override
 	public ShallowBlock getShallowBlock(String headerHash) throws BitcoindException, CommunicationException {
 		List<Object> params = CollectionUtils.asList(headerHash, true);
 		String blockJson = rpcClient.execute(Commands.GET_BLOCK.getName(), params);
