@@ -5,6 +5,7 @@ import com.neemre.btcdcli4j.core.common.AgentConfigurator;
 import com.neemre.btcdcli4j.core.common.Defaults;
 import com.neemre.btcdcli4j.core.common.Errors;
 import com.neemre.btcdcli4j.core.domain.RawBlock;
+import com.neemre.btcdcli4j.core.domain.ShallowBlock;
 import com.neemre.btcdcli4j.core.util.CollectionUtils;
 import com.neemre.btcdcli4j.core.util.StringUtils;
 import lombok.Getter;
@@ -56,6 +57,16 @@ public class ClientConfigurator extends AgentConfigurator {
 	}
 
 	public boolean checkNodeHealth(RawBlock bestRawBlock) {
+		long currentTime = System.currentTimeMillis() / 1000;
+		if ((currentTime - bestRawBlock.getTime()) > TimeUnit.HOURS.toSeconds(6)) {
+			LOG.warn("-- checkNodeHealth(..): last available block was mined >{} hours ago; please "
+					+ "check your network connection", ((currentTime - bestRawBlock.getTime()) / 3600));
+			return false;
+		}
+		return true;
+	}
+
+	public boolean checkNodeHealth(ShallowBlock bestRawBlock) {
 		long currentTime = System.currentTimeMillis() / 1000;
 		if ((currentTime - bestRawBlock.getTime()) > TimeUnit.HOURS.toSeconds(6)) {
 			LOG.warn("-- checkNodeHealth(..): last available block was mined >{} hours ago; please "

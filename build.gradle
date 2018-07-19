@@ -1,6 +1,6 @@
 allprojects {
     group = 'network.bisq.btcd-cli4j'
-    version = '0.5.8.2'
+    version = '0.5.8.3'
 }
 
 subprojects {

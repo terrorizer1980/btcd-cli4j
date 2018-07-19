@@ -33,13 +33,17 @@ public class BtcdClientImpl implements BtcdClient {
 		this(null, nodeConfig);
 	}
 
-	public BtcdClientImpl(CloseableHttpClient httpProvider, Properties nodeConfig) 
+	public BtcdClientImpl(CloseableHttpClient httpProvider, Properties nodeConfig)
 			throws BitcoindException, CommunicationException {
 		initialize();
 		rpcClient = new JsonRpcClientImpl(configurator.checkHttpProvider(httpProvider), 
 				configurator.checkNodeConfig(nodeConfig));
 		configurator.checkNodeVersion(getNetworkInfo().getVersion());
-		configurator.checkNodeHealth(getBlock(getBestBlockHash(), 2));
+		try {
+			configurator.checkNodeHealth(getBlock(getBestBlockHash(), 2));
+		} catch (BitcoindException e) {
+			configurator.checkNodeHealth(getShallowBlock(getBestBlockHash()));
+		}
 	}
 
 	public BtcdClientImpl(String rpcUser, String rpcPassword) throws BitcoindException, 
@@ -286,6 +290,14 @@ public class BtcdClientImpl implements BtcdClient {
 		String blockJson = rpcClient.execute(Commands.GET_BLOCK.getName(), params);
 		RawBlock rawBlock = rpcClient.getMapper().mapToEntity(blockJson, RawBlock.class);
 		return rawBlock;
+	}
+
+	@Override
+	public ShallowBlock getShallowBlock(String headerHash) throws BitcoindException, CommunicationException {
+		List<Object> params = CollectionUtils.asList(headerHash, true);
+		String blockJson = rpcClient.execute(Commands.GET_BLOCK.getName(), params);
+		ShallowBlock shallowBlock = rpcClient.getMapper().mapToEntity(blockJson, ShallowBlock.class);
+		return shallowBlock;
 	}
 
 	@Override

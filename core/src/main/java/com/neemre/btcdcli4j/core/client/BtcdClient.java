@@ -81,6 +81,8 @@ public interface BtcdClient {
      */
     RawBlock getBlock(String headerHash, int verbosity) throws BitcoindException, CommunicationException;
 
+    ShallowBlock getShallowBlock(String headerHash) throws BitcoindException, CommunicationException;
+
     BlockChainInfo getBlockChainInfo() throws BitcoindException, CommunicationException;
 
     Integer getBlockCount() throws BitcoindException, CommunicationException;
