@@ -25,8 +25,7 @@ public class MiningApi {
 		client.getNetworkHashPs(2016, 278106);
 		client.prioritiseTransaction("4ed1f44942405610af66c01f417d2adb0531bff42dba0dac98864c0ff09d220e",
 				new BigDecimal("189233000.51"), 50000000L);
-		client.setGenerate(false);
-		client.setGenerate(false, 7);
+		client.generate(7);
 		client.submitBlock("0400000056ed3621936549216e1cd6b82b07abe29138963c6afc7f64240b00000000000057d"
 				+ "6991e2a3de157eeee27ac769f5271ad9824d71e0cdcee7781a73dd3e950b27f74d956ffff001d093e075"
 				+ "d0101000000010000000000000000000000000000000000000000000000000000000000000000fffffff"

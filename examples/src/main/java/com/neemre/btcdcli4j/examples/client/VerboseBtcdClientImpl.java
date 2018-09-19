@@ -958,18 +958,18 @@ public class VerboseBtcdClientImpl extends BtcdClientImpl {
     }
 
     @Override
-    public void setGenerate(Boolean isGenerate) throws BitcoindException, CommunicationException {
-        super.setGenerate(isGenerate);
-        printResult(Commands.SET_GENERATE.getName(), new String[]{"isGenerate"},
-                new Object[]{isGenerate}, null);
+    public void generate(Integer nBlocks) throws BitcoindException, CommunicationException {
+        super.generate(nBlocks);
+        printResult(Commands.GENERATE.getName(), new String[]{"nBlocks"},
+                new Object[]{nBlocks}, null);
     }
 
     @Override
-    public void setGenerate(Boolean isGenerate, Integer processors) throws BitcoindException,
+    public void generate(Integer nBlocks, Integer maxTries) throws BitcoindException,
             CommunicationException {
-        super.setGenerate(isGenerate, processors);
-        printResult(Commands.SET_GENERATE.getName(), new String[]{"isGenerate", "processors"},
-                new Object[]{isGenerate, processors}, null);
+        super.generate(nBlocks, maxTries);
+        printResult(Commands.GENERATE.getName(), new String[]{"nBlocks", "maxTries"},
+                new Object[]{nBlocks, maxTries}, null);
     }
 
     @Override

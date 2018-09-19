@@ -306,9 +306,9 @@ public interface BtcdClient {
     void setAccount(String address, String account) throws BitcoindException,
             CommunicationException;
 
-    void setGenerate(Boolean isGenerate) throws BitcoindException, CommunicationException;
+    void generate(Integer nBlocks) throws BitcoindException, CommunicationException;
 
-    void setGenerate(Boolean isGenerate, Integer processors) throws BitcoindException,
+    void generate(Integer nBlocks, Integer maxTries) throws BitcoindException,
             CommunicationException;
 
     Boolean setTxFee(BigDecimal txFee) throws BitcoindException, CommunicationException;

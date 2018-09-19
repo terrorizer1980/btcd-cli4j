@@ -1060,15 +1060,15 @@ public class BtcdClientImpl implements BtcdClient {
 	}
 
 	@Override
-	public void setGenerate(Boolean isGenerate) throws BitcoindException, CommunicationException {
-		rpcClient.execute(Commands.SET_GENERATE.getName(), isGenerate);		
+	public void generate(Integer nBlocks) throws BitcoindException, CommunicationException {
+		rpcClient.execute(Commands.GENERATE.getName(), nBlocks);
 	}
 
 	@Override
-	public void setGenerate(Boolean isGenerate, Integer processors) throws BitcoindException, 
+	public void generate(Integer nBlocks, Integer maxTries) throws BitcoindException,
 			CommunicationException {
-		List<Object> params = CollectionUtils.asList(isGenerate, processors);
-		rpcClient.execute(Commands.SET_GENERATE.getName(), params);
+		List<Object> params = CollectionUtils.asList(nBlocks, maxTries);
+		rpcClient.execute(Commands.GENERATE.getName(), params);
 	}
 
 	@Override
