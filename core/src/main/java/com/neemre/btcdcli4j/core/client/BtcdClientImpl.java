@@ -137,7 +137,32 @@ public class BtcdClientImpl implements BtcdClient {
 			Map<String, BigDecimal> toAddresses) throws BitcoindException, CommunicationException {
 		toAddresses = NumberUtils.setValueScale(toAddresses, Defaults.DECIMAL_SCALE);
 		List<Object> params = CollectionUtils.asList(outputs, toAddresses);
-		String hexTransactionJson = rpcClient.execute(Commands.CREATE_RAW_TRANSACTION.getName(), 
+		String hexTransactionJson = rpcClient.execute(Commands.CREATE_RAW_TRANSACTION.getName(),
+				params);
+		String hexTransaction = rpcClient.getParser().parseString(hexTransactionJson);
+		return hexTransaction;
+	}
+
+	@Override
+	public String createRawTransaction(List<OutputOverview> outputs,
+									   Map<String, BigDecimal> toAddresses,
+									   int locktime) throws BitcoindException, CommunicationException {
+		toAddresses = NumberUtils.setValueScale(toAddresses, Defaults.DECIMAL_SCALE);
+		List<Object> params = CollectionUtils.asList(outputs, toAddresses, locktime);
+		String hexTransactionJson = rpcClient.execute(Commands.CREATE_RAW_TRANSACTION.getName(),
+				params);
+		String hexTransaction = rpcClient.getParser().parseString(hexTransactionJson);
+		return hexTransaction;
+	}
+
+	@Override
+	public String createRawTransaction(List<OutputOverview> outputs,
+									   Map<String, BigDecimal> toAddresses,
+									   int locktime,
+									   boolean replaceable) throws BitcoindException, CommunicationException {
+		toAddresses = NumberUtils.setValueScale(toAddresses, Defaults.DECIMAL_SCALE);
+		List<Object> params = CollectionUtils.asList(outputs, toAddresses, locktime, replaceable);
+		String hexTransactionJson = rpcClient.execute(Commands.CREATE_RAW_TRANSACTION.getName(),
 				params);
 		String hexTransaction = rpcClient.getParser().parseString(hexTransactionJson);
 		return hexTransaction;

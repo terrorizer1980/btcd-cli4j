@@ -81,6 +81,22 @@ public class VerboseBtcdClientImpl extends BtcdClientImpl {
     }
 
     @Override
+    public String createRawTransaction(List<OutputOverview> outputs, Map<String, BigDecimal> toAddresses, int locktime) throws BitcoindException, CommunicationException {
+        String hexTransaction = super.createRawTransaction(outputs, toAddresses, locktime);
+        printResult(Commands.CREATE_RAW_TRANSACTION.getName(), new String[]{"outputs",
+                "toAddresses", "locktime"}, new Object[]{outputs, toAddresses, locktime}, hexTransaction);
+        return hexTransaction;
+    }
+
+    @Override
+    public String createRawTransaction(List<OutputOverview> outputs, Map<String, BigDecimal> toAddresses, int locktime, boolean replaceable) throws BitcoindException, CommunicationException {
+        String hexTransaction = super.createRawTransaction(outputs, toAddresses, locktime, replaceable);
+        printResult(Commands.CREATE_RAW_TRANSACTION.getName(), new String[]{"outputs",
+                "toAddresses", "locktime", "replaceable"}, new Object[]{outputs, toAddresses, locktime, replaceable}, hexTransaction);
+        return hexTransaction;
+    }
+
+    @Override
     public RawTransactionOverview decodeRawTransaction(String hexTransaction) throws BitcoindException,
             CommunicationException {
         RawTransactionOverview rawTransaction = super.decodeRawTransaction(hexTransaction);

@@ -28,6 +28,15 @@ public interface BtcdClient {
     String createRawTransaction(List<OutputOverview> outputs, Map<String, BigDecimal> toAddresses)
             throws BitcoindException, CommunicationException;
 
+    String createRawTransaction(List<OutputOverview> outputs,
+                                Map<String, BigDecimal> toAddresses,
+                                int locktime) throws BitcoindException, CommunicationException;
+
+    String createRawTransaction(List<OutputOverview> outputs,
+                                Map<String, BigDecimal> toAddresses,
+                                int locktime,
+                                boolean replaceable) throws BitcoindException, CommunicationException;
+
     RawTransactionOverview decodeRawTransaction(String hexTransaction) throws BitcoindException,
             CommunicationException;
 
