@@ -24,10 +24,6 @@ public class ClientConfigurator extends AgentConfigurator {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ClientConfigurator.class);
 	
-	@Getter
-	private String nodeVersion;
-	
-	
 	@Override
 	public Set<NodeProperties> getRequiredProperties() {
 		return EnumSet.of(NodeProperties.RPC_PROTOCOL, NodeProperties.RPC_HOST, 
@@ -44,18 +40,6 @@ public class ClientConfigurator extends AgentConfigurator {
 		return httpProvider;
 	}
 	
-	public String checkNodeVersion(Integer encodedVersion) {
-		nodeVersion = decodeNodeVersion(encodedVersion);
-		for (String supportedVersion : Defaults.NODE_VERSIONS) {
-			if (nodeVersion.equals(supportedVersion)) {
-				return nodeVersion;
-			}
-		}
-		LOG.warn("-- checkNodeVersion(..): server version mismatch - client optimized for '{}'"
-				+ ", node responded with '{}'", Defaults.NODE_VERSIONS, nodeVersion);
-		return nodeVersion;
-	}
-
 	public boolean checkNodeHealth(RawBlock bestRawBlock) {
 		long currentTime = System.currentTimeMillis() / 1000;
 		if ((currentTime - bestRawBlock.getTime()) > TimeUnit.HOURS.toSeconds(6)) {

@@ -38,7 +38,6 @@ public class BtcdClientImpl implements BtcdClient {
 		initialize();
 		rpcClient = new JsonRpcClientImpl(configurator.checkHttpProvider(httpProvider), 
 				configurator.checkNodeConfig(nodeConfig));
-		configurator.checkNodeVersion(getNetworkInfo().getVersion());
 		try {
 			configurator.checkNodeHealth(getBlock(getBestBlockHash(), 2));
 		} catch (BitcoindException e) {
@@ -1248,7 +1247,7 @@ public class BtcdClientImpl implements BtcdClient {
 
 	@Override
 	public String getNodeVersion() {
-		return configurator.getNodeVersion();
+		return "0.0.0";
 	}
 
 	@Override
