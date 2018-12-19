@@ -657,6 +657,11 @@ public class BtcdClientImpl implements BtcdClient {
 	}
 
 	@Override
+	public void invalidateBlock(String blockHash) throws BitcoindException, CommunicationException {
+		rpcClient.execute(Commands.INVALIDATE_BLOCK.getName(), blockHash);
+	}
+
+	@Override
 	public void keyPoolRefill() throws BitcoindException, CommunicationException {
 		rpcClient.execute(Commands.KEY_POOL_REFILL.getName());
 	}

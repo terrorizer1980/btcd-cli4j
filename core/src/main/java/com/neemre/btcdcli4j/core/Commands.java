@@ -59,6 +59,7 @@ public enum Commands {
 	IMPORT_ADDRESS("importaddress", 1, 3),
 	IMPORT_PRIV_KEY("importprivkey", 1, 3),
 	IMPORT_WALLET("importwallet", 1, 1),
+	INVALIDATE_BLOCK("invalidateblock", 1, 1),
 	KEY_POOL_REFILL("keypoolrefill", 0, 1),
 	LIST_ACCOUNTS("listaccounts", 0, 2),
 	LIST_ADDRESS_GROUPINGS("listaddressgroupings", 0, 0),

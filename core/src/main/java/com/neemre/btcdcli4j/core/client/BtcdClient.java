@@ -187,6 +187,8 @@ public interface BtcdClient {
 
     void importWallet(String filePath) throws BitcoindException, CommunicationException;
 
+    void invalidateBlock(String blockHash) throws BitcoindException, CommunicationException;
+
     void keyPoolRefill() throws BitcoindException, CommunicationException;
 
     void keyPoolRefill(Integer keypoolSize) throws BitcoindException, CommunicationException;
